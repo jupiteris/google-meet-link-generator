@@ -1,0 +1,57 @@
+<html>
+<style type="text/css">
+  #gen-hangout {
+    background: orange;
+    border: 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    margin-right: 24px;
+  }
+</style>
+
+<body>
+  <button onclick="generate()" id="gen-hangout">Google Meet</button>
+  <a id="gmeet-link" target="_blank"></a>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+  let event = {
+    "start": {
+      "date": "2023-03-03"
+    },
+    "end": {
+      "date": "2023-03-04"
+    },
+    "conferenceData": {
+      "createRequest": {
+        "conferenceSolutionKey": {
+          "type": "hangoutsMeet"
+        },
+        "requestId": "some-random-string"
+      }
+    },
+    "summary": "whateversummary"
+  };
+
+  const calendarId = 'jupiter.programmer@gmail.com'
+  const accessToken = 'ya29.a0AVvZVspSvfoV2EqClJSXz40EMMxFnMZyqF355ZQuKbKd4gWgKvSPYm6AsTszT6yEQQXljUpc_Q5ObK28UQqfeAMv3TzTVk40oFOeJKaWXoNIK3TAPadCuIWN4LZfvs_dupq_r-XCsFHjDJqPZqzDP11UX7H0aCgYKAdASARMSFQGbdwaIVPdbb5VO-4toR6kIlUAddg0163'
+
+  function generate() {
+    axios({
+      url: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?conferenceDataVersion=1`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: event,
+    }).then(res => {
+      document.getElementById('gmeet-link').innerHTML = res.data.hangoutLink;
+      document.getElementById('gmeet-link').href = res.data.hangoutLink;
+    });
+  }
+
+</script>
+
+</html>
